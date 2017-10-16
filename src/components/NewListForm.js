@@ -20,8 +20,8 @@ class NewListForm extends Component{
     }
 
     handleSubmit(event) {
-        this.props.onSubmitNewList(this.state.listname);
         event.preventDefault();
+        this.props.onSubmitNewList(this.state.listname);
     }
 
     render() {

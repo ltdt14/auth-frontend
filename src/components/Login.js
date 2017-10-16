@@ -25,8 +25,8 @@ class Login extends Component {
     }
 
     handleSubmit(event) {
-        this.props.onSubmitProp({email: this.state.email, password: this.state.password});
         event.preventDefault();
+        this.props.onSubmitProp({email: this.state.email, password: this.state.password});
     }
 
     render() {
