@@ -68,9 +68,14 @@ class User extends Component {
     }
 
     request(options, data) {
-        const authHeader = {
-            headers: { Authorization: localStorage.getItem('token') }
-        };
+        const authHeader =
+            typeof window !== 'undefined'
+                ? {
+                      headers: {
+                          Authorization: window.localStorage.getItem('token')
+                      }
+                  }
+                : {};
 
         (async () => {
             let res;
@@ -97,13 +102,15 @@ class User extends Component {
                     } catch (err) {
                         console.log(err);
                     }
-                    if(res.data.success) this.request({ action: actions.lists });
-                    else UIkit.notification({
-                        message: res.data.msg,
-                        status: 'danger',
-                        pos: 'top-center',
-                        timeout: 3000
-                    });
+                    if (res.data.success)
+                        this.request({ action: actions.lists });
+                    else
+                        UIkit.notification({
+                            message: res.data.msg,
+                            status: 'danger',
+                            pos: 'top-center',
+                            timeout: 3000
+                        });
                     break;
                 case actions.deleteListItem:
                     try {
@@ -137,14 +144,15 @@ class User extends Component {
                     } catch (err) {
                         UIkit.notification(err.message);
                     }
-                    if(res.data.success) this.request({ action: actions.lists });
-                    else UIkit.notification({
-                        message: res.data.msg,
-                        status: 'danger',
-                        pos: 'top-center',
-                        timeout: 3000
-                    });
-
+                    if (res.data.success)
+                        this.request({ action: actions.lists });
+                    else
+                        UIkit.notification({
+                            message: res.data.msg,
+                            status: 'danger',
+                            pos: 'top-center',
+                            timeout: 3000
+                        });
             }
         })();
     }

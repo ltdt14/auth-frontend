@@ -58,8 +58,10 @@ class Home extends Component {
                 });
             }
             if (res.data.success) {
-                localStorage.setItem('token', res.data.token);
-                navigateTo('/user');
+                if(typeof window !== 'undefined') {
+                    window.localStorage.setItem('token', res.data.token);
+                    navigateTo('/user');
+                }
             } else {
                 this.setState({ msg: res.data.msg });
             }
