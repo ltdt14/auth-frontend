@@ -12,7 +12,7 @@ import UIkit from 'uikit';
 import Icons from 'uikit/dist/js/uikit-icons';
 import { storageAvailable } from "../lib/storage";
 
-UIkit.use(Icons);
+if(typeof UIkit.use === 'function') UIkit.use(Icons);
 
 import Login from '../components/Login';
 
