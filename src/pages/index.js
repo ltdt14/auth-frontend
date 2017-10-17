@@ -8,6 +8,11 @@ import { ThemeProvider } from 'styled-components';
 import { themeVariables } from '../themeVariables';
 import { apiBaseURL } from '../config';
 import axios from 'axios';
+import UIkit from 'uikit';
+import Icons from 'uikit/dist/js/uikit-icons';
+import { storageAvailable } from "../lib/storage";
+
+UIkit.use(Icons);
 
 import Login from '../components/Login';
 
@@ -59,7 +64,12 @@ class Home extends Component {
             }
             if (res.data.success) {
                 if(typeof window !== 'undefined') {
-                    window.sessionStorage.setItem('token', res.data.token);
+                    if(storageAvailable('sessionStorage')){
+                        window.sessionStorage.setItem('token', res.data.token);
+                        //window.document.cookie = res.data.token;
+                    } else{
+                        window.document.cookie = res.data.token;
+                    }
                     navigateTo('/user');
                 }
             } else {

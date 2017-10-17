@@ -8,6 +8,11 @@ import { ThemeProvider } from 'styled-components';
 import { themeVariables } from '../themeVariables';
 import { apiBaseURL } from '../config';
 import axios from 'axios';
+import UIkit from 'uikit';
+import Icons from 'uikit/dist/js/uikit-icons';
+import { storageAvailable } from "../lib/storage";
+
+UIkit.use(Icons);
 
 const actions = {
     deleteListItem: 'deleteListItem',
@@ -72,10 +77,14 @@ class User extends Component {
             typeof window !== 'undefined'
                 ? {
                       headers: {
-                          Authorization: window.sessionStorage.getItem('token')
+                          Authorization: getToken()
                       }
                   }
                 : {};
+
+        function getToken(){
+            return storageAvailable('sessionStorage') ? /*window.document.cookie*/ window.sessionStorage.getItem('token') : window.document.cookie;
+        }
 
         (async () => {
             let res;
@@ -105,7 +114,7 @@ class User extends Component {
                     if (res.data.success)
                         this.request({ action: actions.lists });
                     else
-                        UIkit.notification({
+                        uikit.notification({
                             message: res.data.msg,
                             status: 'danger',
                             pos: 'top-center',
@@ -165,11 +174,6 @@ class User extends Component {
     render() {
         return (
             <div>
-                <Helmet>
-                    <script src="js/jquery.min.js" />
-                    <script src="js/uikit.min.js" />
-                    <script src="js/uikit-icons.min.js" />
-                </Helmet>
                 <ThemeProvider theme={themeVariables}>
                     <Wrapper>
                         <div
