@@ -26,7 +26,7 @@ class NewListForm extends Component{
 
     render() {
         return (
-            <form className="uk-grid-small" data-uk-grid>
+            <form method="post" className="uk-grid-small" data-uk-grid onSubmit={this.handleSubmit}>
                 <div className="uk-width-3-4@s">
                     <input
                         className="uk-input"
@@ -41,8 +41,7 @@ class NewListForm extends Component{
                     <button
                         data-uk-icon="icon: plus"
                         className="uk-button uk-button-primary uk-width-1-1"
-                        type="submit"
-                        onClick={this.handleSubmit}>
+                        type="submit">
                     </button>
                 </div>
             </form>

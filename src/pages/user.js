@@ -72,7 +72,7 @@ class User extends Component {
             typeof window !== 'undefined'
                 ? {
                       headers: {
-                          Authorization: window.localStorage.getItem('token')
+                          Authorization: window.sessionStorage.getItem('token')
                       }
                   }
                 : {};

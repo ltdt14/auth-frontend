@@ -59,7 +59,7 @@ class Home extends Component {
             }
             if (res.data.success) {
                 if(typeof window !== 'undefined') {
-                    window.localStorage.setItem('token', res.data.token);
+                    window.sessionStorage.setItem('token', res.data.token);
                     navigateTo('/user');
                 }
             } else {

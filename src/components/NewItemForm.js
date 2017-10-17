@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { browserHistory } from 'react-router';
 
-class NewItemForm extends Component{
+class NewItemForm extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -11,7 +11,6 @@ class NewItemForm extends Component{
         this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
     }
-
 
     handleChange(event) {
         const target = event.target;
@@ -26,7 +25,11 @@ class NewItemForm extends Component{
 
     render() {
         return (
-            <form className="uk-grid-small" data-uk-grid>
+            <form
+                className="uk-grid-small"
+                data-uk-grid
+                method="post"
+                onSubmit={this.handleSubmit}>
                 <div className="uk-width-3-4@s">
                     <input
                         className="uk-input"
@@ -42,11 +45,10 @@ class NewItemForm extends Component{
                         data-uk-icon="icon: plus"
                         className="uk-button uk-button-primary uk-width-1-1"
                         type="submit"
-                        onClick={this.handleSubmit}>
-                    </button>
+                    />
                 </div>
             </form>
-        )
+        );
     }
 }
 
