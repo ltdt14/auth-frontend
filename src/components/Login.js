@@ -32,7 +32,7 @@ class Login extends Component {
     render() {
         return (
             <Wrapper>
-                <form className="uk-grid-small" data-uk-grid>
+                <form action="" method="post" className="uk-grid-small" onSubmit={this.handleSubmit} data-uk-grid>
                     <div className="uk-width-1-3@s">
                         <input
                             className="uk-input"
@@ -56,8 +56,7 @@ class Login extends Component {
                     <div className="uk-width-1-3@s">
                         <button
                             className="uk-button uk-button-primary uk-width-1-1"
-                            type="submit"
-                            onClick={this.handleSubmit}>
+                            type="submit">
                             Login
                         </button>
                     </div>
