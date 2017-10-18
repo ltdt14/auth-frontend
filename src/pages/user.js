@@ -1,21 +1,24 @@
 import React, { Component } from 'react';
 import { browserHistory } from 'react-router';
 import Link, { navigateTo } from 'gatsby-link';
-import CSS from 'uikit/dist/css/uikit.css';
-import styled from 'styled-components';
 import { Helmet } from 'react-helmet';
-import { ThemeProvider } from 'styled-components';
-import { themeVariables } from '../themeVariables';
-import { apiBaseURL } from '../config';
 import axios from 'axios';
 import UIkit from 'uikit';
 import Icons from 'uikit/dist/js/uikit-icons';
-import { storageAvailable } from "../lib/storage";
 
-if(typeof UIkit.use === 'function') UIkit.use(Icons);
+// local imports
+import { storageAvailable } from '../lib/storage';
+import { apiBaseURL } from '../config';
 
+// local components
+import NewListForm from '../components/NewListForm';
+import List from '../components/List';
+import StylingOverrides from '../components/StylingOverrides';
 
+// UIKit is undefined in static build
+if (typeof UIkit.use === 'function') UIkit.use(Icons);
 
+// define request actions to prevent typos
 const actions = {
     deleteListItem: 'deleteListItem',
     deleteList: 'deleteList',
@@ -23,38 +26,6 @@ const actions = {
     createList: 'createList',
     createItem: 'createItem'
 };
-
-import NewListForm from '../components/NewListForm';
-import List from '../components/List';
-
-const Wrapper = styled.div`
-    .uk-tile-primary {
-        background: #92b4a7;
-    }
-
-    .uk-section-primary {
-        background: #92b4a7;
-    }
-
-    .uk-button-primary {
-        background-color: #92b4a7;
-        color: #fff;
-        border: 1px solid transparent;
-        padding: 0;
-    }
-
-    .uk-button-primary:hover,
-    .uk-button-primary:focus {
-        background-color: #8cada0;
-        color: #fff;
-    }
-
-    .uk-input,
-    .uk-select,
-    .uk-textarea {
-        border: 1px solid #333;
-    }
-`;
 
 class User extends Component {
     constructor(props) {
@@ -84,8 +55,12 @@ class User extends Component {
                   }
                 : {};
 
-        function getToken(){
-            return storageAvailable('sessionStorage') ? /*window.document.cookie*/ window.sessionStorage.getItem('token') : window.document.cookie;
+        function getToken() {
+            return storageAvailable('sessionStorage')
+                ? /*window.document.cookie*/ window.sessionStorage.getItem(
+                      'token'
+                  )
+                : window.document.cookie;
         }
 
         (async () => {
@@ -176,54 +151,52 @@ class User extends Component {
     render() {
         return (
             <div>
-                <ThemeProvider theme={themeVariables}>
-                    <Wrapper>
-                        <div
-                            className="uk-sticky uk-tile uk-tile-primary uk-padding-small uk-box-shadow-medium"
-                            data-uk-sticky="bottom: 0">
-                            <button
-                                className="uk-button uk-button-default uk-float-right"
-                                onClick={this.logout}>
-                                Logout
-                            </button>
-                        </div>
-                        <section
-                            className="uk-section uk-section-muted uk-preserve-color uk-cover-container"
-                            data-uk-height-viewport="offset-bottom: 0">
-                            <div className="uk-container uk-container-small">
-                                <div className="uk-tile uk-tile-default uk-padding-medium uk-box-shadow-medium uk-margin-bottom">
-                                    <NewListForm
-                                        onSubmitNewList={data =>
-                                            this.request(
-                                                {
-                                                    action: actions.createList
-                                                },
-                                                data
-                                            )}
-                                    />
-                                </div>
-                                <List
-                                    lists={this.state.lists}
-                                    onDeleteList={listid =>
+                <StylingOverrides>
+                    <div
+                        className="uk-sticky uk-tile uk-tile-primary uk-padding-small uk-box-shadow-medium"
+                        data-uk-sticky="bottom: 0">
+                        <button
+                            className="uk-button uk-button-default uk-float-right"
+                            onClick={this.logout}>
+                            Logout
+                        </button>
+                    </div>
+                    <section
+                        className="uk-section uk-section-muted uk-preserve-color uk-cover-container"
+                        data-uk-height-viewport="offset-bottom: 0">
+                        <div className="uk-container uk-container-small">
+                            <div className="uk-tile uk-tile-default uk-padding-medium uk-box-shadow-medium uk-margin-bottom">
+                                <NewListForm
+                                    onSubmitNewList={data =>
                                         this.request(
-                                            { action: actions.deleteList },
-                                            listid
-                                        )}
-                                    onDeleteItem={data =>
-                                        this.request(
-                                            { action: actions.deleteListItem },
-                                            data
-                                        )}
-                                    onSubmitNewItem={data =>
-                                        this.request(
-                                            { action: actions.createItem },
+                                            {
+                                                action: actions.createList
+                                            },
                                             data
                                         )}
                                 />
                             </div>
-                        </section>
-                    </Wrapper>
-                </ThemeProvider>
+                            <List
+                                lists={this.state.lists}
+                                onDeleteList={listid =>
+                                    this.request(
+                                        { action: actions.deleteList },
+                                        listid
+                                    )}
+                                onDeleteItem={data =>
+                                    this.request(
+                                        { action: actions.deleteListItem },
+                                        data
+                                    )}
+                                onSubmitNewItem={data =>
+                                    this.request(
+                                        { action: actions.createItem },
+                                        data
+                                    )}
+                            />
+                        </div>
+                    </section>
+                </StylingOverrides>
             </div>
         );
     }

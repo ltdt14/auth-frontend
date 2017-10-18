@@ -1,48 +1,21 @@
 import React, { Component } from 'react';
 import { browserHistory, history } from 'react-router';
 import Link, { navigateTo } from 'gatsby-link';
-import CSS from 'uikit/dist/css/uikit.css';
-import styled from 'styled-components';
 import { Helmet } from 'react-helmet';
-import { ThemeProvider } from 'styled-components';
-import { themeVariables } from '../themeVariables';
-import { apiBaseURL } from '../config';
 import axios from 'axios';
 import UIkit from 'uikit';
 import Icons from 'uikit/dist/js/uikit-icons';
-import { storageAvailable } from "../lib/storage";
 
-if(typeof UIkit.use === 'function') UIkit.use(Icons);
+// local imports
+import { storageAvailable } from '../lib/storage';
+import { apiBaseURL } from '../config';
 
+// local components
 import Login from '../components/Login';
+import StylingOverrides from '../components/StylingOverrides';
 
-const Wrapper = styled.div`
-    .uk-section-primary {
-        background: #92b4a7;
-    }
-
-    .uk-section {
-        padding-top: 200px;
-    }
-
-    .uk-button-primary {
-        background-color: #92b4a7;
-        color: #fff;
-        border: 1px solid transparent;
-    }
-
-    .uk-button-primary:hover,
-    .uk-button-primary:focus {
-        background-color: #8cada0;
-        color: #fff;
-    }
-
-    .uk-input,
-    .uk-select,
-    .uk-textarea {
-        border: 1px solid #333;
-    }
-`;
+// UIKit is undefined in static build
+if (typeof UIkit.use === 'function') UIkit.use(Icons);
 
 class Home extends Component {
     constructor(props) {
@@ -63,11 +36,11 @@ class Home extends Component {
                 });
             }
             if (res.data.success) {
-                if(typeof window !== 'undefined') {
-                    if(storageAvailable('sessionStorage')){
+                if (typeof window !== 'undefined') {
+                    if (storageAvailable('sessionStorage')) {
                         window.sessionStorage.setItem('token', res.data.token);
                         //window.document.cookie = res.data.token;
-                    } else{
+                    } else {
                         window.document.cookie = res.data.token;
                     }
                     navigateTo('/user');
@@ -82,27 +55,22 @@ class Home extends Component {
         return (
             <div>
                 <Helmet>
-                    <script src="js/jquery.min.js" />
-                    <script src="js/uikit.min.js" />
-                    <script src="js/uikit-icons.min.js" />
+                    <title>Login</title>
                 </Helmet>
-                <ThemeProvider theme={themeVariables}>
-                    <Wrapper>
-                        <section
-                            className="uk-section uk-section-primary uk-preserve-color uk-cover-container"
-                            data-uk-height-viewport="offset-bottom: 0">
-                            <div className="uk-container uk-container-small">
-                                <div className="uk-tile uk-tile-default uk-padding-medium uk-box-shadow-medium uk-margin-bottom">
-                                    <Login
-                                        onSubmitProp={data =>
-                                            this.request(data)}
-                                        msg={this.state.msg}
-                                    />
-                                </div>
+                <StylingOverrides>
+                    <section
+                        className="uk-section uk-section-primary uk-preserve-color uk-cover-container"
+                        data-uk-height-viewport="offset-bottom: 0">
+                        <div className="uk-container uk-container-small">
+                            <div className="uk-tile uk-tile-default uk-padding-medium uk-box-shadow-medium uk-margin-bottom">
+                                <Login
+                                    onSubmitProp={data => this.request(data)}
+                                    msg={this.state.msg}
+                                />
                             </div>
-                        </section>
-                    </Wrapper>
-                </ThemeProvider>
+                        </div>
+                    </section>
+                </StylingOverrides>
             </div>
         );
     }
