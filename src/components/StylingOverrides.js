@@ -5,11 +5,11 @@ import { themeVariables } from '../themeVariables';
 
 export const Wrapper = styled.div`
     .uk-section-primary {
-        background: #92b4a7;
+        background: ${props => props.theme.primaryColor};
     }
     
     .uk-tile-primary {
-        background: #92b4a7;
+        background: ${props => props.theme.primaryColor};
     }
 
     .uk-section {
@@ -17,7 +17,7 @@ export const Wrapper = styled.div`
     }
 
     .uk-button-primary {
-        background-color: #92b4a7;
+        background-color: ${props => props.theme.primaryColor};
         color: #fff;
         border: 1px solid transparent;
     }

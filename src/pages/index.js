@@ -5,6 +5,7 @@ import { Helmet } from 'react-helmet';
 import axios from 'axios';
 import UIkit from 'uikit';
 import Icons from 'uikit/dist/js/uikit-icons';
+import CSS from 'uikit/dist/css/uikit.css';
 
 // local imports
 import { storageAvailable } from '../lib/storage';
