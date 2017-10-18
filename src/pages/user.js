@@ -5,11 +5,12 @@ import { Helmet } from 'react-helmet';
 import axios from 'axios';
 import UIkit from 'uikit';
 import Icons from 'uikit/dist/js/uikit-icons';
-import store from '../lib/store/dist/store.legacy';
 
 // local imports
 import { storageAvailable } from '../lib/storage';
 import { apiBaseURL } from '../config';
+import store from '../lib/store/dist/store.legacy';
+
 
 // local components
 import NewListForm from '../components/NewListForm';
@@ -18,15 +19,6 @@ import StylingOverrides from '../components/StylingOverrides';
 
 // UIKit is undefined in static build
 if (typeof UIkit.use === 'function') UIkit.use(Icons);
-
-// define request actions to prevent typos
-const actions = {
-    deleteListItem: 'deleteListItem',
-    deleteList: 'deleteList',
-    lists: 'lists',
-    createList: 'createList',
-    createItem: 'createItem'
-};
 
 class User extends Component {
     constructor(props) {
@@ -40,12 +32,35 @@ class User extends Component {
 
         this.request = this.request.bind(this);
         this.logout = this.logout.bind(this);
+
+
+        /**
+         * @typedef {Object} Action - define request actions to prevent typos
+         * @type {{deleteListItem: string, deleteList: string, lists: string, createList: string, createItem: string}}
+         */
+        this.actions = {
+            deleteListItem: 'deleteListItem',
+            deleteList: 'deleteList',
+            lists: 'lists',
+            createList: 'createList',
+            createItem: 'createItem'
+        }
     }
 
     componentWillMount() {
         this.request({ action: actions.lists });
     }
 
+    /**
+     * @typedef {Object} Options - param for request method
+     * @property {Action} action - decides which request to send
+     */
+
+    /**
+     * Sends ajax request depending on action
+     * @param {Options} options - options for the request
+     * @param {*} data - The data if it's a post request
+     */
     request(options, data) {
         const authHeader =
             typeof window !== 'undefined'
@@ -88,7 +103,7 @@ class User extends Component {
                         console.log(err);
                     }
                     if (res.data.success)
-                        this.request({ action: actions.lists });
+                        this.request({ action: this.actions.lists });
                     else
                         uikit.notification({
                             message: res.data.msg,
@@ -142,6 +157,9 @@ class User extends Component {
         })();
     }
 
+    /**
+     * Deletes token and navigates to index
+     */
     logout() {
         window.sessionStorage.setItem('token', '');
         storageAvailable('sessionStorage')
@@ -172,7 +190,7 @@ class User extends Component {
                                     onSubmitNewList={data =>
                                         this.request(
                                             {
-                                                action: actions.createList
+                                                action: this.actions.createList
                                             },
                                             data
                                         )}
@@ -182,17 +200,17 @@ class User extends Component {
                                 lists={this.state.lists}
                                 onDeleteList={listid =>
                                     this.request(
-                                        { action: actions.deleteList },
+                                        { action: this.actions.deleteList },
                                         listid
                                     )}
                                 onDeleteItem={data =>
                                     this.request(
-                                        { action: actions.deleteListItem },
+                                        { action: this.actions.deleteListItem },
                                         data
                                     )}
                                 onSubmitNewItem={data =>
                                     this.request(
-                                        { action: actions.createItem },
+                                        { action: this.actions.createItem },
                                         data
                                     )}
                             />

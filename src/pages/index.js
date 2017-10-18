@@ -26,6 +26,16 @@ class Home extends Component {
         };
     }
 
+    /**
+     * @typedef {Object} LoginData
+     * @property {string} email - email of the user
+     * @property {string} password - password of the user
+     */
+
+    /**
+     * Login request - adds token to sessionStorage or fallback by store.js on success
+     * @param {LoginData} data
+     */
     request(data) {
         (async () => {
             let res;
