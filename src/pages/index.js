@@ -5,7 +5,7 @@ import { Helmet } from 'react-helmet';
 import axios from 'axios';
 import UIkit from 'uikit';
 import Icons from 'uikit/dist/js/uikit-icons';
-import CSS from 'uikit/dist/css/uikit.css';
+import store from '../lib/store/dist/store.legacy';
 
 // local imports
 import { storageAvailable } from '../lib/storage';
@@ -40,9 +40,8 @@ class Home extends Component {
                 if (typeof window !== 'undefined') {
                     if (storageAvailable('sessionStorage')) {
                         window.sessionStorage.setItem('token', res.data.token);
-                        //window.document.cookie = res.data.token;
                     } else {
-                        window.document.cookie = res.data.token;
+                        store.set('token', res.data.token);
                     }
                     navigateTo('/user');
                 }

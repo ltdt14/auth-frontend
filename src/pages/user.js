@@ -5,7 +5,7 @@ import { Helmet } from 'react-helmet';
 import axios from 'axios';
 import UIkit from 'uikit';
 import Icons from 'uikit/dist/js/uikit-icons';
-import CSS from 'uikit/dist/css/uikit.css';
+import store from '../lib/store/dist/store.legacy';
 
 // local imports
 import { storageAvailable } from '../lib/storage';
@@ -58,10 +58,8 @@ class User extends Component {
 
         function getToken() {
             return storageAvailable('sessionStorage')
-                ? /*window.document.cookie*/ window.sessionStorage.getItem(
-                      'token'
-                  )
-                : window.document.cookie;
+                ? window.sessionStorage.getItem('token')
+                : store.get('token');
         }
 
         (async () => {
@@ -145,7 +143,10 @@ class User extends Component {
     }
 
     logout() {
-        localStorage.setItem('token', '');
+        window.sessionStorage.setItem('token', '');
+        storageAvailable('sessionStorage')
+            ? window.sessionStorage.setItem('token', '')
+            : store.remove('token');
         navigateTo('/');
     }
 
