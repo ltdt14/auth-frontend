@@ -48,7 +48,7 @@ class User extends Component {
     }
 
     componentWillMount() {
-        this.request({ action: actions.lists });
+        this.request({ action: this.actions.lists });
     }
 
     /**
@@ -81,7 +81,7 @@ class User extends Component {
             let res;
 
             switch (options.action) {
-                case actions.lists:
+                case this.actions.lists:
                     try {
                         res = await axios.get(
                             `${apiBaseURL}/lists`,
@@ -92,7 +92,7 @@ class User extends Component {
                     }
                     this.setState({ lists: res.data });
                     break;
-                case actions.createList:
+                case this.actions.createList:
                     try {
                         res = await axios.post(
                             `${apiBaseURL}/createlist`,
@@ -103,7 +103,7 @@ class User extends Component {
                         console.log(err);
                     }
                     if (res.data.success)
-                        this.request({ action: this.actions.lists });
+                        this.request({ action: this.actions.lists }, null);
                     else
                         uikit.notification({
                             message: res.data.msg,
@@ -112,7 +112,7 @@ class User extends Component {
                             timeout: 3000
                         });
                     break;
-                case actions.deleteListItem:
+                case this.actions.deleteListItem:
                     try {
                         res = await axios.post(
                             `${apiBaseURL}/deletelistitem`,
@@ -122,9 +122,9 @@ class User extends Component {
                     } catch (err) {
                         console.log(err);
                     }
-                    this.request({ action: actions.lists });
+                    this.request({ action: this.actions.lists });
                     break;
-                case actions.deleteList:
+                case this.actions.deleteList:
                     try {
                         res = await axios.post(
                             `${apiBaseURL}/deletelist`,
@@ -132,9 +132,9 @@ class User extends Component {
                             authHeader
                         );
                     } catch (err) {}
-                    this.request({ action: actions.lists });
+                    this.request({ action: this.actions.lists });
                     break;
-                case actions.createItem:
+                case this.actions.createItem:
                     try {
                         res = await axios.post(
                             `${apiBaseURL}/createlistitem`,
@@ -145,7 +145,7 @@ class User extends Component {
                         UIkit.notification(err.message);
                     }
                     if (res.data.success)
-                        this.request({ action: actions.lists });
+                        this.request({ action: this.actions.lists });
                     else
                         UIkit.notification({
                             message: res.data.msg,
